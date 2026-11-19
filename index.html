@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skin Brightening Ingredient Guide</title>
+  <meta name="description" content="A small interactive guide that matches common skin concerns to the ingredients most often used in skin brightening supplements, plus a daily habit checklist.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <img src="assets/top-7-skin-brightening-supplements-3x2.png"
+         alt="Banner reading The 7 best Skin Brightening Supplements, showing several supplement bottles on a soft green background"
+         width="1620" height="1080">
+  </header>
+
+  <main>
+    <section class="intro">
+      <h1>Skin Brightening Ingredient Guide</h1>
+      <p>“Brightening” on a supplement label can mean very different things. This page helps you start from your main skin concern and see which ingredients are most often associated with it.</p>
+    </section>
+
+    <section class="card" aria-labelledby="matcher-title">
+      <h2 id="matcher-title">Ingredient matcher</h2>
+      <label for="concern">What is your main skin concern?</label>
+      <select id="concern">
+        <option value="">Choose one</option>
+        <option value="dullness">Dullness</option>
+        <option value="dark-spots">Dark spots</option>
+        <option value="uneven-tone">Uneven tone</option>
+        <option value="dryness">Dryness and lack of glow</option>
+      </select>
+      <ul id="ingredients" class="chips" aria-live="polite"></ul>
+      <p id="concern-note" class="muted"></p>
+    </section>
+
+    <section class="card" aria-labelledby="habits-title">
+      <h2 id="habits-title">Today’s skin basics</h2>
+      <p class="muted">No supplement replaces these. Your checks are saved in this browser only.</p>
+      <ul id="habit-list" class="habits"></ul>
+      <p id="progress" class="progress"></p>
+    </section>
+
+    <section class="card" aria-labelledby="facts-title">
+      <h2 id="facts-title">Good to know</h2>
+      <ul class="facts">
+        <li><strong>Give it time.</strong> Most formulas need around 8 to 12 weeks of consistent daily use before changes are likely to be noticeable.</li>
+        <li><strong>Sunscreen comes first.</strong> Daily broad-spectrum SPF 30+ matters more than any capsule.</li>
+        <li><strong>Check the label.</strong> Look for third-party testing and minimal fillers.</li>
+      </ul>
+    </section>
+
+    <section class="card" aria-labelledby="reading-title">
+      <h2 id="reading-title">Further reading</h2>
+      <p>The concern-to-ingredient mapping on this page is based on NuBest’s <a href="https://www.nubest.com/blogs/beauty-care/best-skin-brightening-supplements">comparison of seven skin brightening supplements</a>, which lists ingredients, intended use, and pros and cons for each product. It is published on the brand’s own blog, and the brand’s product is ranked first.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>This page is for general information only and is not medical advice. Talk with your doctor or pharmacist before starting any supplement, especially if you are pregnant, nursing, taking medication, or managing a health condition.</p>
+  </footer>
+
+  <script>
+    const CONCERNS = {
+      dullness: {
+        ingredients: ['Vitamin C', 'Glutathione', 'Astaxanthin'],
+        note: 'Antioxidant-focused formulas are the most common choice for tired-looking skin.'
+      },
+      'dark-spots': {
+        ingredients: ['Glutathione', 'Vitamin C'],
+        note: 'Visible dark spots often take longer to change. Daily SPF is essential here.'
+      },
+      'uneven-tone': {
+        ingredients: ['Niacinamide', 'Alpha lipoic acid'],
+        note: 'Look for formulas that pair these with other antioxidants.'
+      },
+      dryness: {
+        ingredients: ['Hyaluronic acid', 'Ceramides', 'Collagen peptides'],
+        note: 'Hydration-focused formulas support a healthy-looking glow rather than pigmentation.'
+      }
+    };
+
+    const HABITS = [
+      { id: 'spf', label: 'Applied broad-spectrum SPF 30+' },
+      { id: 'water', label: 'Drank water steadily through the day' },
+      { id: 'sleep', label: 'Slept 7 or more hours' },
+      { id: 'produce', label: 'Ate fruit or vegetables' },
+      { id: 'routine', label: 'Did my evening skincare routine' }
+    ];
+
+    const STORAGE_KEY = 'skin-basics-log';
+
+    function toKey(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function loadLog() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? {}; }
+      catch { return {}; }
+    }
+
+    function saveLog(log) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(log)); }
+      catch { /* Storage unavailable: works for this session only. */ }
+    }
+
+    function renderIngredients(concern) {
+      const list = document.getElementById('ingredients');
+      const note = document.getElementById('concern-note');
+      list.innerHTML = '';
+      const entry = CONCERNS[concern];
+      note.textContent = entry ? entry.note : '';
+      (entry ? entry.ingredients : []).forEach((name) => {
+        const li = document.createElement('li');
+        li.textContent = name;
+        list.append(li);
+      });
+    }
+
+    function renderProgress(today) {
+      const done = HABITS.filter(({ id }) => today[id]).length;
+      document.getElementById('progress').textContent = `${done} of ${HABITS.length} done today`;
+    }
+
+    function renderHabits() {
+      const log = loadLog();
+      const key = toKey(new Date());
+      const list = document.getElementById('habit-list');
+      list.innerHTML = '';
+
+      HABITS.forEach(({ id, label }) => {
+        const li = document.createElement('li');
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.id = `habit-${id}`;
+        input.checked = Boolean(log[key]?.[id]);
+        input.addEventListener('change', () => {
+          log[key] = { ...log[key], [id]: input.checked };
+          saveLog(log);
+          renderProgress(log[key]);
+        });
+        const text = document.createElement('label');
+        text.htmlFor = input.id;
+        text.textContent = label;
+        li.append(input, text);
+        list.append(li);
+      });
+
+      renderProgress(log[key] ?? {});
+    }
+
+    document.getElementById('concern')
+      .addEventListener('change', (e) => renderIngredients(e.target.value));
+    renderHabits();
+  </script>
+</body>
+</html>
