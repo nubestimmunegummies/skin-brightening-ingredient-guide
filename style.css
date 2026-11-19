@@ -1,0 +1,122 @@
+:root {
+  --bg: #eef5e8;
+  --surface: #ffffff;
+  --text: #173d16;
+  --muted: #5e7a58;
+  --brand: #265f23;
+  --accent: #c9a24a;
+  --border: #dce8d4;
+  --chip: #e3f0db;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101a0f;
+    --surface: #182617;
+    --text: #e6f0e1;
+    --muted: #a3b89d;
+    --brand: #8fcf86;
+    --accent: #d9b867;
+    --border: #2a3d28;
+    --chip: #223621;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+.hero img {
+  display: block;
+  width: 100%;
+  max-width: 1080px;
+  height: auto;
+  margin: 0 auto;
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 1rem;
+}
+
+h1, h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.15;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 2.75rem); margin: 0 0 0.75rem; }
+h2 { font-size: 1.5rem; margin: 0 0 0.75rem; color: var(--brand); }
+
+.intro p { font-size: 1.125rem; margin: 0; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+label { font-weight: 600; }
+
+select {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.chips li {
+  background: var(--chip);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-weight: 600;
+}
+
+.muted { color: var(--muted); }
+
+.habits { list-style: none; padding: 0; margin: 0.5rem 0 0; }
+.habits li { padding: 0.45rem 0; border-bottom: 1px solid var(--border); }
+.habits li:last-child { border-bottom: 0; }
+.habits input { width: 1.1rem; height: 1.1rem; margin-right: 0.6rem; accent-color: var(--brand); vertical-align: -0.15rem; }
+.habits label { font-weight: 400; cursor: pointer; }
+
+.progress { font-weight: 600; margin-bottom: 0; }
+
+.facts { padding-left: 1.2rem; margin: 0; }
+.facts li { margin: 0.4rem 0; }
+
+a { color: var(--brand); text-underline-offset: 3px; }
+
+footer {
+  max-width: 760px;
+  margin: 1.5rem auto 2.5rem;
+  padding: 1rem 1.25rem 0;
+  border-top: 2px solid var(--accent);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
