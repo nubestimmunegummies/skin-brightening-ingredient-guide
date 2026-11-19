@@ -41,7 +41,7 @@ open index.html   # macOS. On Windows use: start index.html
 2. Under **Build and deployment**, set **Source** to *Deploy from a branch*.
 3. Choose the `main` branch and the `/ (root)` folder, then click **Save**.
 
-The site will be available at `https://<your-username>.github.io/skin-brightening-ingredient-guide/`.
+The site will be available at `https://nubestimmunegummies.github.io/skin-brightening-ingredient-guide/`.
 
 ## Customizing the data
 
