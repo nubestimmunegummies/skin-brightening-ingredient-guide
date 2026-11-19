@@ -30,7 +30,7 @@ Built with plain HTML, CSS, and a few lines of vanilla JavaScript. No frameworks
 Clone the repository and open `index.html` in any modern browser. No server is required.
 
 ```bash
-git clone https://github.com/<your-username>/skin-brightening-ingredient-guide.git
+git clone https://github.com/nubestimmunegummies/skin-brightening-ingredient-guide.git
 cd skin-brightening-ingredient-guide
 open index.html   # macOS. On Windows use: start index.html
 ```
